@@ -20,6 +20,9 @@ can access api on 127.0.0.1:8000
 API ENDPOINTS :
 
 GET /appointmets  - get all appointments - GET METHOD 
+
+
+
 POST/ create - create appointment  - POST METHOD
 body
 {
