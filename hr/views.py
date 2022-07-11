@@ -23,6 +23,11 @@ def get_appointments(request):
             'data': serializer.data
         })
 
+
+
+
+
+
 @api_view(['POST'])
 def get_possible_appointments(request):
     """
@@ -124,14 +129,17 @@ def get_possible_appointments(request):
                 })
             else:
                 return Response({
-                    'status': 'success',
-                    'data': possible_intervals
+                    'status': 'success hjhj',
+                    'data': convert(possible_intervals)
                 })
         else:
             return Response({
                 'status': 'fail',
                 'data': 'No possible appointments'
             })
+
+def convert(list):
+    return (*list, )
 
 def solve(intervals):
       start, end = intervals.pop()
