@@ -1,3 +1,4 @@
+from operator import pos
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
@@ -33,8 +34,8 @@ def get_possible_appointments(request):
     """
     Get possible appointments
     {
-    "candidate_id":1,
-    "interviewer_id":2
+    "candidate_id":3,
+    "interviewer_id":4
     }
     """
     if request.method == 'POST':
@@ -122,15 +123,27 @@ def get_possible_appointments(request):
             })
 
         if possible_intervals:
+            
             if possible_intervals[0] == possible_intervals[1]:
                 return Response({
                     'status': 'success',
                     'data': 'No possible appointments'
                 })
             else:
+                possible_intervals_1 = chunks(range(possible_intervals[0],possible_intervals[1]), 1)
+                possible_intervals_2 = []
+                for i in range(possible_intervals[0],possible_intervals[1]):
+                    if i > 12:
+                        possible_intervals_2.append([i - 12,i-12+1])
+                        # possible_intervals_2.append([i,i+1])
+                    elif i == 12:
+                        possible_intervals_2.append([i,i-12+1])
+                    else:
+                        possible_intervals_2.append([i,i+1])
+                
                 return Response({
-                    'status': 'success hjhj',
-                    'data': convert(possible_intervals)
+                    'status': 'success',
+                    'data': possible_intervals_2
                 })
         else:
             return Response({
@@ -138,8 +151,10 @@ def get_possible_appointments(request):
                 'data': 'No possible appointments'
             })
 
-def convert(list):
-    return (*list, )
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 def solve(intervals):
       start, end = intervals.pop()
